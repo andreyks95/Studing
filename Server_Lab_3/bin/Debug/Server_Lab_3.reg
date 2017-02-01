@@ -1,0 +1,105 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\Program.Server]
+@="Server_Lab_3_KPP.Server"
+
+[HKEY_CLASSES_ROOT\Program.Server\CLSID]
+@="{BB78D399-0145-426C-8473-A04CCAA36811}"
+
+[HKEY_CLASSES_ROOT\CLSID\{BB78D399-0145-426C-8473-A04CCAA36811}]
+@="Server_Lab_3_KPP.Server"
+
+[HKEY_CLASSES_ROOT\CLSID\{BB78D399-0145-426C-8473-A04CCAA36811}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="Server_Lab_3_KPP.Server"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{BB78D399-0145-426C-8473-A04CCAA36811}\InprocServer32\0.0.0.0]
+"Class"="Server_Lab_3_KPP.Server"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{BB78D399-0145-426C-8473-A04CCAA36811}\ProgId]
+@="Program.Server"
+
+[HKEY_CLASSES_ROOT\CLSID\{BB78D399-0145-426C-8473-A04CCAA36811}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
+
+[HKEY_CLASSES_ROOT\Server_Lab_3_KPP.ComAPI]
+@="Server_Lab_3_KPP.ComAPI"
+
+[HKEY_CLASSES_ROOT\Server_Lab_3_KPP.ComAPI\CLSID]
+@="{C1882CC1-6BAA-3BDE-BED4-5EE93AEB2069}"
+
+[HKEY_CLASSES_ROOT\CLSID\{C1882CC1-6BAA-3BDE-BED4-5EE93AEB2069}]
+@="Server_Lab_3_KPP.ComAPI"
+
+[HKEY_CLASSES_ROOT\CLSID\{C1882CC1-6BAA-3BDE-BED4-5EE93AEB2069}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="Server_Lab_3_KPP.ComAPI"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{C1882CC1-6BAA-3BDE-BED4-5EE93AEB2069}\InprocServer32\0.0.0.0]
+"Class"="Server_Lab_3_KPP.ComAPI"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{C1882CC1-6BAA-3BDE-BED4-5EE93AEB2069}\ProgId]
+@="Server_Lab_3_KPP.ComAPI"
+
+[HKEY_CLASSES_ROOT\CLSID\{C1882CC1-6BAA-3BDE-BED4-5EE93AEB2069}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
+
+[HKEY_CLASSES_ROOT\Server_Lab_3_KPP.ClassFactory]
+@="Server_Lab_3_KPP.ClassFactory"
+
+[HKEY_CLASSES_ROOT\Server_Lab_3_KPP.ClassFactory\CLSID]
+@="{6BD47933-B716-3D6E-B3B2-3B4E5259E413}"
+
+[HKEY_CLASSES_ROOT\CLSID\{6BD47933-B716-3D6E-B3B2-3B4E5259E413}]
+@="Server_Lab_3_KPP.ClassFactory"
+
+[HKEY_CLASSES_ROOT\CLSID\{6BD47933-B716-3D6E-B3B2-3B4E5259E413}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="Server_Lab_3_KPP.ClassFactory"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{6BD47933-B716-3D6E-B3B2-3B4E5259E413}\InprocServer32\0.0.0.0]
+"Class"="Server_Lab_3_KPP.ClassFactory"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{6BD47933-B716-3D6E-B3B2-3B4E5259E413}\ProgId]
+@="Server_Lab_3_KPP.ClassFactory"
+
+[HKEY_CLASSES_ROOT\CLSID\{6BD47933-B716-3D6E-B3B2-3B4E5259E413}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
+
+[HKEY_CLASSES_ROOT\Server_Lab_3_KPP.Program]
+@="Server_Lab_3_KPP.Program"
+
+[HKEY_CLASSES_ROOT\Server_Lab_3_KPP.Program\CLSID]
+@="{E302EDEA-62B2-3ECC-B8A0-08530560E41F}"
+
+[HKEY_CLASSES_ROOT\CLSID\{E302EDEA-62B2-3ECC-B8A0-08530560E41F}]
+@="Server_Lab_3_KPP.Program"
+
+[HKEY_CLASSES_ROOT\CLSID\{E302EDEA-62B2-3ECC-B8A0-08530560E41F}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="Server_Lab_3_KPP.Program"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{E302EDEA-62B2-3ECC-B8A0-08530560E41F}\InprocServer32\0.0.0.0]
+"Class"="Server_Lab_3_KPP.Program"
+"Assembly"="Server_Lab_3, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+
+[HKEY_CLASSES_ROOT\CLSID\{E302EDEA-62B2-3ECC-B8A0-08530560E41F}\ProgId]
+@="Server_Lab_3_KPP.Program"
+
+[HKEY_CLASSES_ROOT\CLSID\{E302EDEA-62B2-3ECC-B8A0-08530560E41F}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]

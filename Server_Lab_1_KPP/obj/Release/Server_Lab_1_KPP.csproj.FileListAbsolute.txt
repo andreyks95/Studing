@@ -1,0 +1,5 @@
+C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Server_Lab_1_KPP\bin\Release\Server_Lab_1_KPP.dll
+C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Server_Lab_1_KPP\bin\Release\Server_Lab_1_KPP.pdb
+C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Server_Lab_1_KPP\obj\Release\Server_Lab_1_KPP.dll
+C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Server_Lab_1_KPP\obj\Release\Server_Lab_1_KPP.pdb
+C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Server_Lab_1_KPP\obj\Release\Server_Lab_1_KPP.csprojResolveAssemblyReference.cache
