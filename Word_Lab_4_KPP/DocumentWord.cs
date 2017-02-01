@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Word = Microsoft.Office.Interop.Word;
 using System.Reflection;
 
@@ -11,9 +12,11 @@ namespace Word_Lab_4_KPP
             //создаём документ
             Word.Application word = new Word.Application();
             object miss = Missing.Value;
-            object path = @"C:\Users\Андрей\Desktop\WordDocument.docx";
-            object readOnly = true;
-            Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
+            object path = @"C:\Users\Андрей\Desktop\Doc.docx";
+            object readOnly = false;
+            object isVisible = false;
+            word.Visible = false;
+            Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref isVisible, ref miss, ref miss, ref miss, ref miss);
             //получааем текст
             string text = GetText(docs);
             //выводим весь текст с файла
@@ -21,9 +24,21 @@ namespace Word_Lab_4_KPP
             Console.Write("Введите букву с которой будет начинаться слово \nВыполните ввод: ");
             //считываем нажатую клавишу
             char symbol = (char)Console.Read();
-            Console.WriteLine("Найдено: " + GetCount(symbol, text.ToLower()) + " слова, которые начинаются с буквы: " + symbol);
-            //закрываем документ без сохранения и выходим
-            docs.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
+            string result = "Найдено: " + GetCount(symbol, text.ToLower()) + " слова, которые начинаются с буквы: " + symbol;
+            Console.WriteLine(result);
+
+            docs.Content.Text += text;
+           // word.Selection.TypeText("Hello, World!");
+            docs.Content.InsertAfter("\r\n\r\n It's end!");  
+            docs.SaveAs(ref path, ref miss,
+                                ref miss, ref miss, ref miss,
+                                ref miss, ref readOnly, ref miss,
+                                ref miss, ref miss, ref miss,
+                                ref miss, ref miss, ref miss,
+                                ref miss, ref miss);
+            docs.Close(ref miss, ref miss, ref miss);
+           // docs.Close();
+            //docs.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
             word.Quit();
             Console.ReadKey();
 

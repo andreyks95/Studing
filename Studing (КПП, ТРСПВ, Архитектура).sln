@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client_Lab_3", "Client_Lab_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Word_Lab_4_KPP", "Word_Lab_4_KPP\Word_Lab_4_KPP.csproj", "{8561B917-6965-44DB-A0AC-A500E160B2EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDocument", "WordDocument\WordDocument.csproj", "{09A16E7B-FFC2-4CF6-A049-BE42602002C5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{8561B917-6965-44DB-A0AC-A500E160B2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8561B917-6965-44DB-A0AC-A500E160B2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8561B917-6965-44DB-A0AC-A500E160B2EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09A16E7B-FFC2-4CF6-A049-BE42602002C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09A16E7B-FFC2-4CF6-A049-BE42602002C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09A16E7B-FFC2-4CF6-A049-BE42602002C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09A16E7B-FFC2-4CF6-A049-BE42602002C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

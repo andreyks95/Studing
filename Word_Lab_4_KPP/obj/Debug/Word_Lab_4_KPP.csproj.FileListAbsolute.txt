@@ -5,3 +5,10 @@ C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, Т�
 C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Word_Lab_4_KPP\obj\Debug\Word_Lab_4_KPP.csprojResolveAssemblyReference.cache
 C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Word_Lab_4_KPP\obj\Debug\Word_Lab_4_KPP.exe
 C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Word_Lab_4_KPP\obj\Debug\Word_Lab_4_KPP.pdb
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\bin\Debug\Word_Lab_4_KPP.exe.config
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\obj\Debug\Word_Lab_4_KPP.exe
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\obj\Debug\Word_Lab_4_KPP.pdb
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\bin\Debug\Word_Lab_4_KPP.exe
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\bin\Debug\Word_Lab_4_KPP.pdb
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\bin\Debug\Microsoft.Office.Tools.Word.v4.0.Utilities.dll
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\obj\Debug\Word_Lab_4_KPP.csprojResolveAssemblyReference.cache
