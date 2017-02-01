@@ -24,3 +24,6 @@ C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, Т�
 C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Client_Lab_1\obj\Debug\Client_Lab_1.pdb
 C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Client_Lab_1\bin\Debug\Server_Lab_1_KPP.dll
 C:\Users\Андрей\documents\visual studio 2015\Projects\Studing (КПП, ТРСПВ, Архитектура)\Client_Lab_1\bin\Debug\Server_Lab_1_KPP.pdb
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Client_Lab_1\bin\Debug\Client_Lab_1.exe.config
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Client_Lab_1\obj\Debug\Client_Lab_1.exe
+C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Client_Lab_1\obj\Debug\Client_Lab_1.pdb
