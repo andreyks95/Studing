@@ -1,0 +1,5 @@
+/bin/
+/obj/
+/"Service References"/
+/Properties/
+*.csproj
