@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Word = Microsoft.Office.Interop.Word;
 using System.Reflection;
+using System.Threading;
 
 namespace Word_Lab_4_KPP
 {
@@ -12,7 +14,7 @@ namespace Word_Lab_4_KPP
             //создаём документ
             Word.Application word = new Word.Application();
             object miss = Missing.Value;
-            object path = @"C:\Users\Андрей\Desktop\Doc.docx";
+            object path = @"C:\Users\Андрей\Documents\Visual Studio 2015\Projects\Studing.git\Word_Lab_4_KPP\Doc.docx";
             object readOnly = false;
             object isVisible = false;
             word.Visible = false;
@@ -21,15 +23,24 @@ namespace Word_Lab_4_KPP
             string text = GetText(docs);
             //выводим весь текст с файла
             Console.WriteLine(text);
-            Console.Write("Введите букву с которой будет начинаться слово \nВыполните ввод: ");
+            Console.Write("\nВведите букву с которой будет начинаться слово \nВыполните ввод: ");
             //считываем нажатую клавишу
             char symbol = (char)Console.Read();
-            string result = "Найдено: " + GetCount(symbol, text.ToLower()) + " слова, которые начинаются с буквы: " + symbol;
+            //получаем результаты: количество и слова которые найдены
+            var tupleGetCount = GetCount(symbol, text);
+            int count = tupleGetCount.Item1; //количество 
+            List<string> wordsFind = new List<string>(); //для слов
+            wordsFind = tupleGetCount.Item2; //слова
+            string result = "Найдено: " + count + " слова, которые начинаются с буквы: " + symbol;
+            result += "\nНайденные слова которые начинаются с буквы " + symbol;
+            //LINQ вместо foreach
+            result = wordsFind.Aggregate(result, (current, i) => current + ("\n" + i));
             Console.WriteLine(result);
 
-            docs.Content.Text += text;
-           // word.Selection.TypeText("Hello, World!");
-            docs.Content.InsertAfter("\r\n\r\n It's end!");  
+            //вставляем результаты выполнения приложения в doc файл.
+            docs.Content.InsertAfter("\r\n" + result);
+
+            //сохраняем документ
             docs.SaveAs(ref path, ref miss,
                                 ref miss, ref miss, ref miss,
                                 ref miss, ref readOnly, ref miss,
@@ -37,9 +48,16 @@ namespace Word_Lab_4_KPP
                                 ref miss, ref miss, ref miss,
                                 ref miss, ref miss);
             docs.Close(ref miss, ref miss, ref miss);
-           // docs.Close();
-            //docs.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
-            word.Quit();
+            word.Quit(false);          
+            if (docs != null)
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(docs);
+            if (word!= null)
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(word);
+            docs = null;
+            word = null;
+            //собираем мусор
+            GC.Collect();
+            Console.WriteLine("Результат выполнения приложения записан в соответствующий файл. ");
             Console.ReadKey();
 
         }
@@ -56,17 +74,35 @@ namespace Word_Lab_4_KPP
             return totaltext;
         }
 
-        //получить количество слов, начинающихся на такую букву
-        private static int GetCount(char symbol, string text)
+        //получить количество слов, начинающихся на  букву
+        //вернуть в кортеже сразу два значения
+        private static Tuple<int, List<string>> GetCount(char symbolSearch, string textForSearch)
         {
+            string text = textForSearch.ToLower();
+            string symbolCache = symbolSearch.ToString().ToLower();
+            char symbol = char.Parse(symbolCache);
             int count = 0;
-            for (int i=0; i < text.Length; i++)
+            List<string> words = new List<string>();//сюда будут записываться найденные слова
+            for (int i = 0; i < text.Length; i++)
             {
+                //найти слово которое начинается с символа.
                 if (text[i] == ' ')
-                   if (text[i + 1] == symbol)
-                       count++;
+                    if (text[i + 1] == symbol)
+                    {
+                        count++; //увеличиваем кол. слов найденных
+                        string findWord = null;
+                        //записываем найденное слово
+                        for (int j = i + 1; j < text.Length; j++)
+                        {
+                            if (text[j] == ' ') break; //если найденное слово закончилось выходим (обрезаем строку)
+                            else
+                                findWord += text[j];
+                        }
+                        //добавим слово в общий список найденных слов
+                        words.Add(findWord);
+                    }
             }
-            return count;
+            return new Tuple<int, List<string>>(count,words);
         }
 
     }
