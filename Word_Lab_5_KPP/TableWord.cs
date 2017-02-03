@@ -111,8 +111,8 @@ namespace Word_Lab_5_KPP
                     //первая строка "шапка" будет жирным
                     if (i == 1)
                         tbl.Rows[i].Range.Font.Bold = 1;
-                    tbl.Cell(i, 0).Width = 110;
-                    tbl.Cell(i, j).Width = 85;
+                    tbl.Cell(i, 0).Width = 350;
+                    tbl.Cell(i, j).Width = 100;
                     //размещаем текст в первом столбце под "шапкой" по левому краю
                     if (j == 1 && i > 1)
                         tbl.Cell(i, j).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
@@ -125,7 +125,6 @@ namespace Word_Lab_5_KPP
                     tbl.Cell(i, j).Range.Borders[Word.WdBorderType.wdBorderBottom].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
                 }
         }
-
 
         //Закрываем документ
         private static void CloseDocument(/*object path, */Word.Application word, Word.Document docs, object miss, object readOnly)
