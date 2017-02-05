@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace Excel_Lab_6_KPP
+namespace Excel_Lab_7_KPP
 {
     public class ExcelCode
     {
@@ -23,10 +23,10 @@ namespace Excel_Lab_6_KPP
             object misValue = System.Reflection.Missing.Value;
 
             xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet) xlWorkBook.Worksheets.get_Item(1);
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
             //предыдущая таблица создавалась для 11 варианта 
-            string[,] text = new string[,] { 
+            string[,] text = new string[,] {
                         {"Привлеченные средства коммерческого банка", "Сумма млн.грн." },
                         {"Депозиты государственных предприятий","2000"},
                         {"Депозиты с/ х предприятий","850"},
@@ -46,15 +46,15 @@ namespace Excel_Lab_6_KPP
             {
                 for (int j = 1; j <= columns; j++)
                 {
-                    xlWorkSheet.Cells[i, j] = text[i-1, j-1];
-                    if(j==1)
-                        ((Excel.Range)xlWorkSheet.Columns[1]).ColumnWidth = 40;//устанавливаем ширину для первого столбца
+                    xlWorkSheet.Cells[i, j] = text[i - 1, j - 1];
+                    if (j == 1)
+                        ((Excel.Range)xlWorkSheet.Columns[1]).ColumnWidth = 45;//устанавливаем ширину для первого столбца
                     else
-                        ((Excel.Range)xlWorkSheet.Columns[j]).ColumnWidth = 20;//устанавливаем ширину для остальных столбцов
+                        ((Excel.Range)xlWorkSheet.Columns[j]).ColumnWidth = 15;//устанавливаем ширину для остальных столбцов
                 }
             }
 
-            string[] range = { "B2:B9"};//диапазоны для расчетов по столбцам"B2:B5","C2:C5","D2:D5","E2:E5"//
+            string[] range = { "B2:B9" };//диапазоны для расчетов по столбцам"B2:B5","C2:C5","D2:D5","E2:E5"//
             double[] sumResult = new double[range.Length];//сумма для каждого диапазона значений
             double[] avgResult = new double[range.Length];//среднее для каждого диапазона значений
             Excel.Range xlRng;
@@ -70,28 +70,49 @@ namespace Excel_Lab_6_KPP
             //выводим итоги
             for (int j = 0; j < range.Length; j++)
             {
-                xlWorkSheet.Cells[10, j+2] = sumResult[j];
-                xlWorkSheet.Cells[11, j+2] = avgResult[j];
+                xlWorkSheet.Cells[10, j + 2] = sumResult[j];
+                xlWorkSheet.Cells[11, j + 2] = avgResult[j];
             }
 
-            #region Общий итог. То есть сумма и среднее всех предыдущих столбцов
-            //ОБЩИЙ ИТОГ
-            /*range = new string[2] { "B6:E6", "B7:E7" };
-            sumResult = new double[1];
-            avgResult = new double[1];
-            xlRng = xlWorkSheet.Range[range[0]];
-            sumResult[0] = xlApp.WorksheetFunction.Sum(xlRng);
-            xlRng = xlWorkSheet.Range[range[1]];
-            avgResult[0] = xlApp.WorksheetFunction.Average(xlRng);
-            xlWorkSheet.Cells[8, 1] = "Сумма всех кварталов: ";
-            xlWorkSheet.Cells[9, 1] = "Среднее всех кварталов: ";
-            xlWorkSheet.Cells[8, 2] = sumResult[0];
-            xlWorkSheet.Cells[9, 2] = avgResult[0];*/
-            #endregion
+            Excel.Range chartRange;
+            Excel.ChartObjects xlCharts = (Excel.ChartObjects)xlWorkSheet.ChartObjects(Type.Missing);
+            Excel.ChartObject myChart = (Excel.ChartObject)xlCharts.Add(330, 0, 540, 360);
+            Excel.Chart chartPage = myChart.Chart;
+
+            chartRange = xlWorkSheet.get_Range("A1", "B9");
+            chartPage.SetSourceData(chartRange, misValue);
+
+            chartPage.ChartType = Excel.XlChartType.xlColumnClustered; 
+
+            xlWorkBook.Close();
+            xlApp.Quit();
+
+            releaseObject(xlWorkSheet);
+            releaseObject(xlWorkBook);
+            releaseObject(xlApp);
 
             Console.WriteLine("Таблица успешно создана!");
             Console.ReadKey();
         }
+
+        private static void releaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                Console.WriteLine("Упс! Возникло исключение: " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
     }
 }
 
