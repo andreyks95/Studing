@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel_Lab_7_KPP", "Excel_La
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "КПП", "КПП", "{A3A04B82-CBBC-4713-ADC6-5C7495C1E362}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lr_1_3_TRSPO", "lr_1_3_TRSPO\lr_1_3_TRSPO.csproj", "{018E6C61-6E7F-40D9-BA9A-47768ABCD3F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lr_2_3_TRSPO", "lr_2_3_TRSPO\lr_2_3_TRSPO.csproj", "{F0B6FE30-CCDD-4E39-AF2C-CF0C4C051860}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,14 @@ Global
 		{EE756656-8161-491A-B8DC-5C4EED756739}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE756656-8161-491A-B8DC-5C4EED756739}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE756656-8161-491A-B8DC-5C4EED756739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{018E6C61-6E7F-40D9-BA9A-47768ABCD3F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{018E6C61-6E7F-40D9-BA9A-47768ABCD3F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{018E6C61-6E7F-40D9-BA9A-47768ABCD3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{018E6C61-6E7F-40D9-BA9A-47768ABCD3F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0B6FE30-CCDD-4E39-AF2C-CF0C4C051860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0B6FE30-CCDD-4E39-AF2C-CF0C4C051860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0B6FE30-CCDD-4E39-AF2C-CF0C4C051860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0B6FE30-CCDD-4E39-AF2C-CF0C4C051860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
