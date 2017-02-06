@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics.Stopwatch;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace lr_1_3_TRSPO
@@ -8,8 +8,9 @@ namespace lr_1_3_TRSPO
     {
         private static void Main(string[] args)
         {
+            
            Stopwatch sw = new Stopwatch();
-            sw.Start();
+            
             Console.WriteLine(
                 "Поиск наибольшего значения функции нескольких переменных методом сканирования с заданным шагом");
             Console.WriteLine("Введите: нач. значение, кон. значение и шаг: ");
@@ -21,14 +22,16 @@ namespace lr_1_3_TRSPO
                 start = Convert.ToInt32(Console.ReadLine().Trim());
                 end = Convert.ToInt32(Console.ReadLine().Trim());
                string valueDouble = Console.ReadLine().Trim();
-                //double ma = Convert.ToDouble(Console.ReadLine().Trim().ToString());
                 if (!double.TryParse(valueDouble, NumberStyles.Any, CultureInfo.InvariantCulture, out step))                    
                     Console.WriteLine("Ошибка ввода дробного числа: ");
                else {
+                    sw.Start();//Проверяем длительность выполнения расчётов
                     arrayValues = new double[GetSizeArray(start, end, step)];
                     arrayValues = GetArrayValues(start, end, step);
                     max = GetMax(arrayValues);
                     Console.WriteLine("Наибольшее значение функции: " + max);
+                    sw.Stop();
+                    Console.WriteLine("Длительность выполнения расчётов (сек.): " + sw.Elapsed.TotalSeconds);
                 }
             }
             catch (Exception ex)
