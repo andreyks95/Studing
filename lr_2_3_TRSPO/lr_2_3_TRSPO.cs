@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace lr_2_3_TRSPO
@@ -8,6 +9,9 @@ namespace lr_2_3_TRSPO
     {
         private static void Main(string[] args)
         {
+            //таймер 
+            Stopwatch sw = new Stopwatch();
+            
             Console.WriteLine(
                 "Поиск наибольшего значения функции нескольких переменных методом сканирования с заданным шагом");
             Console.WriteLine("Введите: нач. значение, кон. значение и шаг: ");
@@ -19,15 +23,42 @@ namespace lr_2_3_TRSPO
                 start = Convert.ToInt32(Console.ReadLine().Trim());
                 end = Convert.ToInt32(Console.ReadLine().Trim());
                 string valueDouble = Console.ReadLine().Trim();
-                //double ma = Convert.ToDouble(Console.ReadLine().Trim().ToString());
                 if (!double.TryParse(valueDouble, NumberStyles.Any, CultureInfo.InvariantCulture, out step))
                     Console.WriteLine("Ошибка ввода дробного числа: ");
                 else
                 {
-                    arrayValues = new double[GetSizeArray(start, end, step)];
-                    arrayValues = GetArrayValues(start, end, step);
-                    max = GetMax(arrayValues);
+                    //первый поток
+                    Thread threadGetSizeArray = new Thread(delegate() {
+                        arrayValues = new double[GetSizeArray(start, end, step)];
+                    });
+                    //второй поток
+                    Thread threadGetArrayValues = new Thread(delegate()
+                    {
+                       arrayValues = GetArrayValues(start, end, step);
+                    });
+                    Thread threadGetMax= new Thread(delegate()
+                    {
+                        
+                        max = GetMax(arrayValues);
+                    });
+                    
+                    threadGetSizeArray.Priority = ThreadPriority.Highest;
+                    threadGetArrayValues.Priority = ThreadPriority.AboveNormal;
+                    threadGetMax.Priority = ThreadPriority.Normal;
+
+                    sw.Start();
+                    threadGetSizeArray.Start();
+                    threadGetSizeArray.Join();
+
+                    threadGetArrayValues.Start();
+                    threadGetArrayValues.Join();
+                   
+                    threadGetMax.Start();
+                    threadGetMax.Join();
+                    
                     Console.WriteLine("Наибольшее значение функции: " + max);
+                    sw.Stop();
+                    Console.WriteLine("Длительность выполнения расчётов (сек.): " + sw.Elapsed.TotalSeconds);
                 }
             }
             catch (Exception ex)
