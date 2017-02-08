@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Numerics;
 
 namespace lr_1_3_TRSPO
 {
@@ -13,21 +14,27 @@ namespace lr_1_3_TRSPO
             
             Console.WriteLine(
                 "Поиск наибольшего значения функции нескольких переменных методом сканирования с заданным шагом");
-            Console.WriteLine("Введите: нач. значение, кон. значение и шаг: ");
-            int start, end;
-            double step, max;
+            BigInteger startX, endX, startY, endY;
+            double stepX, stepY, max;
             double[] arrayValues;
             try
             {
-                start = Convert.ToInt32(Console.ReadLine().Trim());
-                end = Convert.ToInt32(Console.ReadLine().Trim());
-               string valueDouble = Console.ReadLine().Trim();
-                if (!double.TryParse(valueDouble, NumberStyles.Any, CultureInfo.InvariantCulture, out step))                    
-                    Console.WriteLine("Ошибка ввода дробного числа: ");
+                //считываем значения
+                Console.WriteLine("Введите: нач. значение, кон. значение и шаг для оси X: ");
+                startX = Convert.ToInt32(Console.ReadLine().Trim());
+                endX = Convert.ToInt32(Console.ReadLine().Trim());
+                string valueDoubleX = Console.ReadLine().Trim();
+                Console.WriteLine("Введите: нач. значение, кон. значение и шаг для оси Y: ");
+                startY = Convert.ToInt32(Console.ReadLine().Trim());
+                endY = Convert.ToInt32(Console.ReadLine().Trim());
+                string valueDoubleY = Console.ReadLine().Trim();
+                if (!double.TryParse(valueDoubleX, NumberStyles.Any, CultureInfo.InvariantCulture, out stepX) ||
+                    !double.TryParse(valueDoubleY, NumberStyles.Any, CultureInfo.InvariantCulture, out stepY)   )                    
+                    Console.WriteLine("Ошибка ввода дробного числа!");
                else {
                     sw.Start();//Проверяем длительность выполнения расчётов
-                    arrayValues = new double[GetSizeArray(start, end, step)];
-                    arrayValues = GetArrayValues(start, end, step);
+                    arrayValues = new double[(ulong)GetSizeArray(startX, endX, stepX, startY, endY, stepY)];
+                    arrayValues = GetArrayValues(startX, endX, stepX, startY, endY, stepY);
                     max = GetMax(arrayValues);
                     Console.WriteLine("Наибольшее значение функции: " + max);
                     sw.Stop();
@@ -49,35 +56,36 @@ namespace lr_1_3_TRSPO
         private static double GetMax(double[] array)
         {
             double max = array[0];
-            for (int i = 0; i < array.Length; i++)
+            for (BigInteger i = 0; i < array.Length; i++)
             {
-                if (max < array[i])
-                    max = array[i];
+                if (max < array[(ulong)i])
+                    max = array[(ulong)i];
             }
             return max;
         }
 
-        private static double[] GetArrayValues(int start, int end, double step)
+        private static double[] GetArrayValues(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
         {
-            int countValues = GetSizeArray(start, end, step);
-            double[] values = new double[countValues];
-            int j = 0;
+            BigInteger countValues = GetSizeArray(startX, endX, stepX, startY, endY, stepY);
+            double[] values = new double[(ulong)countValues];
+            BigInteger k = 0;
             //пример: начальная точка
             //start = -2;
             //i = -2; i <= 10; i += 0.3;
-            for (double i = (double) start; i <= (double) end; i += step)
-                values[j++] = GetValueFunc(i);
+            for (double i = (double) startX; i <= (double) endX; i += stepX)
+                for (double j = (double)startY; j <= (double)endY; j += stepY)
+                    values[(ulong)k++] = GetValueFunc(i,j);
             return values;
         }
 
-        private static double GetValueFunc(double i)
+        private static double GetValueFunc(double i, double j)
         {
-            return i*i + 2*i;
+            return i*i + 2*j;
         }
 
-        private static int GetSizeArray(int start, int end, double step)
+        private static BigInteger GetSizeArray(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
         {
-            return (int)((((double)end - (double)start)/ step) + 1.0);
+            return (BigInteger)(((double)endX - (double)startX)/ stepX + 1.0) * (BigInteger)(((double)endY - (double)startY) / stepY + 1.0);
         }
 
     }
