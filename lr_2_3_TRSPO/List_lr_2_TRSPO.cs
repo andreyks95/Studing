@@ -1,4 +1,5 @@
-﻿/*using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Numerics;
 
 namespace lr_1_3_TRSPO
 {
-    public class lr_1_3_TRSPO
+    public class List_lr_2_TRSPO
     {
         private static void Main(string[] args)
         {
@@ -17,7 +18,7 @@ namespace lr_1_3_TRSPO
                 "Поиск наибольшего значения функции нескольких переменных методом сканирования с заданным шагом");
             BigInteger startX, endX, startY, endY;
             double stepX, stepY, max;
-            double[] arrayValues;
+            List<double> arrayValues = new List<double>();
             try
             {
                 //считываем значения
@@ -35,8 +36,8 @@ namespace lr_1_3_TRSPO
                 else
                 {
                     sw.Start();//Проверяем длительность выполнения расчётов
-                    arrayValues = new double[GetSizeArray(startX, endX, stepX, startY, endY, stepY)];
-                    arrayValues = GetArrayValues(startX, endX, stepX, startY, endY, stepY);
+                   // arrayValues = new double[GetSizeArray(startX, endX, stepX, startY, endY, stepY)];
+                    arrayValues = GetValuesXY(startX, endX, stepX, startY, endY, stepY);
                     max = GetMax(arrayValues);
                     Console.WriteLine("Наибольшее значение функции: " + max);
                     sw.Stop();
@@ -55,50 +56,40 @@ namespace lr_1_3_TRSPO
 
         }
 
-        private static double GetMax(double[] array)
+        private static double GetMax(List<double> array)
         {
             double max = double.IsNaN(array[0]) ? 0 : array[0];
-            for (BigInteger i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Count(); i++)
             {
-                if (max < array[(ulong)i])
-                    max = array[(ulong)i];
+                if (max < array[i])
+                    max = array[i];
             }
             return max;
         }
 
-        private static double[] GetArrayValues(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
+        /*private static List<double> GetArrayValues(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
         {
-            ulong countValues = GetSizeArray(startX, endX, stepX, startY, endY, stepY);
-            double[] values = new double[countValues];
-            ulong k = 0;
-            //values = values.Union(GetValuesXY(startX, endX, stepX, startY, endY, stepY)).ToArray();
-            for (double x = (double)startX; x <= (double)endX; x += stepX)
-                values = values.Union(GetValuesY(startY, endY, stepY, x)).ToArray();
-            //пример: начальная точка
-            //start = -2;
-            //i = -2; i <= 10; i += 0.3;
-            //for (double i = (double)startX; i <= (double)endX; i += stepX)
-            //    for (double j = (double)startY; j <= (double)endY; j += stepY)
-            //        values[(ulong)k++] = GetValueFunc(i, j);
+            List<double> values = new List<double>();
+            //for (double x = (double)startX; x <= (double)endX; x += stepX)
+            //   values.AddRange(GetValuesY(startY, endY, stepY, x)); //этот выполниться за 3,1531478  
+            values.AddRange(GetValuesXY(startX, endX, stepX, startY, endY, stepY)); // этот выполниться  за 3,2830899
+           
             return values;
-        }
-
-        private static double[] GetValuesXY(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
+        }*/
+        
+        private static List<double> GetValuesXY(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
         {
-            ulong countValues = GetSizeArray(startX, endX, stepX, startY, endY, stepY);
-            double[] valuesYX = new double[countValues];
-            ulong k = 0;
-            for (double x = (double) startX; x <= (double) endX; x += stepX)
-                 valuesYX = valuesYX.Union(GetValuesY(startY, endY, stepY, x)).ToArray();
+            List<double> valuesYX = new List<double>();
+            for (double x = (double)startX; x <= (double)endX; x += stepX)
+                valuesYX.AddRange(GetValuesY(startY, endY, stepY, x));
             return valuesYX;
         }
 
-        private static double[] GetValuesY(BigInteger startY, BigInteger endY, double stepY, double valueX)
+        private static List<double> GetValuesY(BigInteger startY, BigInteger endY, double stepY, double valueX)
         {
-            double[] valuesY = new double[(ulong)(((double)endY - (double)startY) / stepY + 1.0)];
-            ulong k = 0;
+            List<double> valuesY = new List<double>(); 
             for (double y = (double)startY; y <= (double)endY; y += stepY)
-                valuesY[k++]= GetValueFunc(valueX, y);
+                valuesY.Add(GetValueFunc(valueX, y));
             return valuesY;
         }
 
@@ -107,10 +98,9 @@ namespace lr_1_3_TRSPO
             return x * x + 2 * y;
         }
 
-        private static ulong GetSizeArray(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
+       /* private static ulong GetSizeArray(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
         {
             return (ulong)(((double)endX - (double)startX) / stepX + 1.0) * (ulong)(((double)endY - (double)startY) / stepY + 1.0);
-        }
-
+        }*/
     }
-}*/
+}
