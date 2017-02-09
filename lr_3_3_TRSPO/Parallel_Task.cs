@@ -1,13 +1,15 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace lr_3_3_TRSPO
 {
-    public class lr_3_3_TRSPO
+    class Parallel_Task
     {
         private static void Main(string[] args)
         {
@@ -35,9 +37,17 @@ namespace lr_3_3_TRSPO
                     Console.WriteLine("Ошибка ввода дробного числа!");
                 else
                 {
-                    sw.Start();//Проверяем длительность выполнения расчётов
-                               // arrayValues = new double[GetSizeArray(startX, endX, stepX, startY, endY, stepY)];
-                    arrayValues = GetValuesXY(startX, endX, stepX, startY, endY, stepY);
+                    sw.Start(); //Проверяем длительность выполнения расчётов
+                    //arrayValues = GetValuesXY(startX, endX, stepX, startY, endY, stepY);
+                    //Task<List<double>> task = GetValuesXY(startX, endX, stepX, startY, endY, stepY);
+                    //Task task = new Task(() => GetValuesXY(startX, endX, stepX, startY, endY, stepY));
+                    //Task task = new Task(delegate() { GetValuesXY(startX, endX, stepX, startY, endY, stepY); });
+                    //Task task = new Task(() => { GetValuesXY(startX, endX, stepX, startY, endY, stepY); });
+                    var task = GetValuesXY(startX, endX, stepX, startY, endY, stepY);
+                    //task.Start();
+                    task.Wait();
+                    task.Dispose();
+                    arrayValues = task.Result;
                     max = GetMax(arrayValues);
                     Console.WriteLine("Наибольшее значение функции: " + max);
                     sw.Stop();
@@ -67,22 +77,42 @@ namespace lr_3_3_TRSPO
             return max;
         }
 
-        /*private static List<double> GetArrayValues(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
-        {
-            List<double> values = new List<double>();
-            //for (double x = (double)startX; x <= (double)endX; x += stepX)
-            //   values.AddRange(GetValuesY(startY, endY, stepY, x)); //этот выполниться за 3,1531478  
-            values.AddRange(GetValuesXY(startX, endX, stepX, startY, endY, stepY)); // этот выполниться  за 3,2830899
-           
-            return values;
-        }*/
 
-        private static List<double> GetValuesXY(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
+        //Реализован с Task: выполнение за 2,7706549
+        private static Task<List<double>> GetValuesXY(BigInteger startX, BigInteger endX, double stepX,
+            BigInteger startY, BigInteger endY, double stepY) =>
+        Task.Run(()=>
         {
-            List<double> valuesYX = new List<double>();
-            for (double x = (double)startX; x <= (double)endX; x += stepX)
-                valuesYX.AddRange(GetValuesY(startY, endY, stepY, x));
+
+            //Вместо Parellel.For, потому что нельзя указать свой шаг
+            //Задействует все ядра процессора распиливание задачи
+            //SteppedIterator (Enumerable<double>) перечислитель для дипазона, 
+            //возвращает текущее значение в диапазоне Х здесь как index
+
+            var valuesYX = new List<double>();
+            object localLockObject = new object();
+
+            System.Threading.Tasks.Parallel.ForEach(
+                SteppedIterator((double) startX, (double) endX, stepX),
+                () => { return new List<double>(); },
+                (index, state, localList) =>
+                {
+                    localList.AddRange(GetValuesY(startY, endY, stepY, index));
+                    return localList;
+                        //с каждой итерацией увеличиваем localList, закидываем текущий диапазон X и считаем его на промежутке
+                },
+                (finalResult) => { lock (localLockObject) valuesYX.AddRange(finalResult); }
+                //Console.WriteLine(Task.CurrentId); в конце выдать результат, вернуть полностью (конечный) List<double>
+                );
             return valuesYX;
+        } );
+
+        private static IEnumerable<double> SteppedIterator(double startIndex, double endIndex, double stepSize)
+        {
+            for (double i = startIndex; i < endIndex; i = i + stepSize)
+            {
+                yield return i;
+            }
         }
 
         private static List<double> GetValuesY(BigInteger startY, BigInteger endY, double stepY, double valueX)
@@ -97,10 +127,5 @@ namespace lr_3_3_TRSPO
         {
             return x * x + 2 * y;
         }
-
-        /* private static ulong GetSizeArray(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
-         {
-             return (ulong)(((double)endX - (double)startX) / stepX + 1.0) * (ulong)(((double)endY - (double)startY) / stepY + 1.0);
-         }*/
     }
-}
+}*/
