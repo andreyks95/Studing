@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -19,7 +19,7 @@ namespace lr_3_3_TRSPO
             Console.WriteLine(
                 "Поиск наибольшего значения функции нескольких переменных методом сканирования с заданным шагом");
             BigInteger startX, endX, startY, endY;
-            double stepX, stepY, max;
+            double stepX, stepY;
             List<double> arrayValues = new List<double>();
             try
             {
@@ -39,8 +39,7 @@ namespace lr_3_3_TRSPO
                 {
                     sw.Start();//Проверяем длительность выполнения расчётов
                     arrayValues = GetValuesXY(startX, endX, stepX, startY, endY, stepY);
-                    max = GetMax(arrayValues);
-                    Console.WriteLine("Наибольшее значение функции: " + max);
+                    Console.WriteLine("Наибольшее значение функции: " + GetMax(arrayValues));
                     sw.Stop();
                     Console.WriteLine("Длительность выполнения расчётов (сек.): " + sw.Elapsed.TotalSeconds);
                 }
@@ -59,13 +58,7 @@ namespace lr_3_3_TRSPO
 
         private static double GetMax(List<double> array)
         {
-            double max = double.IsNaN(array[0]) ? 0 : array[0];
-            for (int i = 0; i < array.Count(); i++)
-            {
-                if (max < array[i])
-                    max = array[i];
-            }
-            return max;
+            return double.IsNaN(array[0]) ? 0 : array.Max();
         }
 
         //выполняеться на 15% быстрее за 2,8635439 сек
@@ -73,7 +66,6 @@ namespace lr_3_3_TRSPO
         //Пространство имен:   System.Threading.Tasks
         private static List<double> GetValuesXY(BigInteger startX, BigInteger endX, double stepX, BigInteger startY, BigInteger endY, double stepY)
         {
-
             //Вместо Parellel.For, потому что нельзя указать свой шаг
             //Задействует все ядра процессора распиливание задачи
             //SteppedIterator (Enumerable<double>) перечислитель для дипазона, 
@@ -81,16 +73,27 @@ namespace lr_3_3_TRSPO
 
             var valuesYX = new List<double>();
             object localLockObject = new object();
+
             System.Threading.Tasks.Parallel.ForEach(
-                  SteppedIterator((double)startX, (double)endX, stepX),
-                  () => { return new List<double>(); },
-                  (index, state, localList) =>
-                  {
-                      localList.AddRange(GetValuesY(startY, endY, stepY, index));
-                      return localList;//с каждой итерацией увеличиваем localList, закидываем текущий диапазон X и считаем его на промежутке
-                  },
-                  (finalResult) => { lock (localLockObject) valuesYX.AddRange(finalResult); } //в конце выдать результат, вернуть полностью (конечный) List<double>
-            );
+               SteppedIterator((double)startX, (double)endX, stepX),
+               () => new List<double>(),
+               (index, state, localList) =>
+               {
+                   //double max = GetMax(GetValuesY(startY, endY, stepY, index));
+                   //localList.Add(max);
+                   localList.Add(GetMax(GetValuesY(startY, endY, stepY, index)));
+                   if (localList.Count > 1000)
+                   {
+                       //max = GetMax(localList);
+                       double max = GetMax(localList);
+                       localList.Clear();
+                       localList.TrimExcess();
+                       localList.Add(max);
+                   }
+                   return  localList; //с каждой итерацией увеличиваем localList, закидываем текущий диапазон X и считаем его на промежутке
+               },
+               (finalResult) => { lock (localLockObject) valuesYX.AddRange(finalResult); }
+               );
             return valuesYX;
         }
         
@@ -115,4 +118,4 @@ namespace lr_3_3_TRSPO
             return x * x + 2 * y;
         }
     }
-}*/
+}

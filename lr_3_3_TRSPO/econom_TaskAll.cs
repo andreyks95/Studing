@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace lr_3_3_TRSPO
 {
-    class econom
+    class econom_TaskAll
     {
         private static void Main(string[] args)
         {
@@ -68,11 +68,10 @@ namespace lr_3_3_TRSPO
         }
 
         //1,4393848
-        private static async Task<double> GetMax(List<double> array) //=> Task.Run(())=>
+        private static Task<double> GetMax(List<double> array) => Task.Run(() =>
         {
             return double.IsNaN(array[0]) ? 0 : array.Max();
-        }
-        //);
+        });
 
 
         //Реализован с Task: выполнение за 2,7706549
@@ -96,13 +95,25 @@ namespace lr_3_3_TRSPO
                () => { return new List<double>(); },
                (index, state, localList) =>
                {
-                   List<double> local = new List<double>();
-                   local.AddRange(GetValuesY(startY, endY, stepY, index));
-                   var task = GetMax(local);
-                   task.Wait();
-                   task.Dispose();
-                   localList.Add(task.Result);//Добавляет тольк макс. значение X на текущем промежутке y
-                       return localList;//с каждой итерацией увеличиваем localList, закидываем текущий диапазон X и считаем его на промежутке
+                   //List<double> local = new List<double>();
+                   //local.AddRange(GetValuesY(startY, endY, stepY, index));
+                   //var task = GetMax(local);
+                   //task.Wait();
+                   //task.Dispose();
+                   //localList.Add(task.Result);//Добавляет тольк макс. значение X на текущем промежутке y
+                   //    return localList;//с каждой итерацией увеличиваем localList, закидываем текущий диапазон X и считаем его на промежутке
+                    double max;
+                   max = GetMax(GetValuesY(startY, endY, stepY, index));
+                   localList.Add(max);
+                   if (localList.Count > 1000)
+                   {
+                       max = GetMax(localList);
+                       localList.Clear();
+                       localList.TrimExcess();
+                       localList.Add(max);
+
+                   }
+                   return  localList;
                    },
                (finalResult) => { lock (localLockObject) valuesYX.AddRange(finalResult); }
                );
@@ -130,4 +141,4 @@ namespace lr_3_3_TRSPO
             return x * x + 2 * y;
         }
     }
-}
+}*/

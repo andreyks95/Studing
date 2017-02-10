@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -125,4 +125,4 @@ namespace lr_3_3_TRSPO
             return x * x + 2 * y;
         }
     }
-}
+}*/
