@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lr_3_3_TRSPO", "lr_3_3_TRSP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lr_4_3_TRSPO", "lr_4_3_TRSPO\lr_4_3_TRSPO.csproj", "{D43B1ADA-F74C-493C-BE4D-074AC9844849}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lr_5_3_TRSPO", "lr_5_3_TRSPO\lr_5_3_TRSPO.csproj", "{7DC6CE56-C691-4EB6-8377-3AF048047EB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{D43B1ADA-F74C-493C-BE4D-074AC9844849}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D43B1ADA-F74C-493C-BE4D-074AC9844849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D43B1ADA-F74C-493C-BE4D-074AC9844849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC6CE56-C691-4EB6-8377-3AF048047EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC6CE56-C691-4EB6-8377-3AF048047EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC6CE56-C691-4EB6-8377-3AF048047EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC6CE56-C691-4EB6-8377-3AF048047EB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
