@@ -56,15 +56,28 @@ namespace ConsoleServer
                 listener.Start();
 
                 Console.WriteLine("Ожидание подключений...");
+                Console.WriteLine("Чтобы остановить количество подключаемых клиентов введите: \"stop\"");
 
 
-                
+                //Динамически одтавать значения диапазона, последний поток забирает больше значений
+                //есть список клиентов, создать с для каждого поток на сервере
+                //и расделить им поровну массив и отправить.
+                //Узнать как отправлять числа. 
+                //Можно в лист записать List<double> arr где arr[0] arr[1] arr[2] начало, конец, шаг для X; 
+                //arr[3] arr[4] arr[5] начало, конец, шаг для Y;
+
                 while (true)
                 {
                     TcpClient client = listener.AcceptTcpClient();
                     listConnectedClients.Add(client);
-                    Console.WriteLine(listConnectedClients.Count);
+
+                    if (Console.ReadLine().ToLower() == "stop")
+                    {
+                        Console.WriteLine("Количество подключенных клиентов готовых выполнить задачу: " + listConnectedClients.Count);
+                        break;
+                    }
                 }
+                
                 /*while (true)
                 {
                     TcpClient client = listener.AcceptTcpClient();
@@ -83,7 +96,7 @@ namespace ConsoleServer
             {
                 if (listener != null)
                     listener.Stop();
-                
+                Console.Read();
             }
         }
     }
