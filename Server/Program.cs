@@ -1,103 +1,245 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Numerics;
-using System.Threading;
-using Server;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ConsoleServer
+namespace TcpListenerApp
 {
     class Program
     {
-        const int port = 8888;
-        static TcpListener listener;
+        const int port = 8888; // порт для прослушивания подключений
         static void Main(string[] args)
         {
-            List<TcpClient> listConnectedClients = new List<TcpClient>();
+            //Список клиентов клиентов
+            List<TcpClient> clients = new List<TcpClient>();
+            List<NetworkStream> streams = new List<NetworkStream>();
+            TcpListener server = null;
             try
             {
-                /*
-                //string address = "127.0.0.1";
-                //string address = "192.168.1.133";
-                //listener = new TcpListener(IPAddress.Parse(address), port);
-                Stopwatch sw = new Stopwatch();
-                BigInteger startX, endX, startY, endY;
-                double stepX, stepY, max;
-                List<double> arrayValues = new List<double>();
+                //IPAddress localAddr = IPAddress.Parse("127.0.0.1");//IPAddress.Any
+                server = new TcpListener(IPAddress.Any, port);
 
-                Console.WriteLine("Поиск наибольшего значения функции нескольких переменных методом сканирования с заданным шагом");
-                //считываем значения
-                Console.WriteLine("Введите: нач. значение, кон. значение и шаг для оси X: ");
-                startX = Convert.ToInt32(Console.ReadLine().Trim());
-                endX = Convert.ToInt32(Console.ReadLine().Trim());
-                string valueDoubleX = Console.ReadLine().Trim();
-                Console.WriteLine("Введите: нач. значение, кон. значение и шаг для оси Y: ");
-                startY = Convert.ToInt32(Console.ReadLine().Trim());
-                endY = Convert.ToInt32(Console.ReadLine().Trim());
-                string valueDoubleY = Console.ReadLine().Trim();
-                if (!double.TryParse(valueDoubleX, NumberStyles.Any, CultureInfo.InvariantCulture, out stepX) ||
-                    !double.TryParse(valueDoubleY, NumberStyles.Any, CultureInfo.InvariantCulture, out stepY))
-                    Console.WriteLine("Ошибка ввода дробного числа!");
-                else
-                {
-                    sw.Start();//Проверяем длительность выполнения расчётов
-                               // arrayValues = new double[GetSizeArray(startX, endX, stepX, startY, endY, stepY)];
-                    //arrayValues = GetValuesXY(startX, endX, stepX, startY, endY, stepY);
-                    //max = GetMax(arrayValues);
-                    Console.WriteLine("Наибольшее значение функции: " + max);
-                    sw.Stop();
-                    Console.WriteLine("Длительность выполнения расчётов (сек.): " + sw.Elapsed.TotalSeconds);
-                }
-                */
-                listener = new TcpListener(IPAddress.Any, port);
-                listener.Start();
+                // запуск слушателя
+                server.Start();
 
-                Console.WriteLine("Ожидание подключений...");
-                Console.WriteLine("Чтобы остановить количество подключаемых клиентов введите: \"stop\"");
-
-
-                //Динамически одтавать значения диапазона, последний поток забирает больше значений
-                //есть список клиентов, создать с для каждого поток на сервере
-                //и расделить им поровну массив и отправить.
-                //Узнать как отправлять числа. 
-                //Можно в лист записать List<double> arr где arr[0] arr[1] arr[2] начало, конец, шаг для X; 
-                //arr[3] arr[4] arr[5] начало, конец, шаг для Y;
+                Console.WriteLine("Ожидание подключений... ");
+                Console.WriteLine("Нажмите stop для начала выполнения задания.");
+                //Посчитать количество, потом распилить массив и ждать от каждого максимум.
 
                 while (true)
                 {
-                    TcpClient client = listener.AcceptTcpClient();
-                    listConnectedClients.Add(client);
+                    // получаем входящее подключение
+                    TcpClient client = server.AcceptTcpClient();
+                    //добавляем в список клиента
+                    clients.Add(client);
+                    Console.WriteLine("Подключено клиент. Количество клиентов " + clients.Count());
+                    //Если нажато "stop" - выходим с цикла подключений, и дальше работаем с существующими клиентами
+                    if (Console.ReadLine().ToLower() != "stop") continue;
+                    else
+                        break;
+                }
+                int response = 0;
+                //работаем с каждым клиентом
+                //сделать для каждого свой поток
+                foreach (var currentClient in clients)
+                {
+                    response += 1;
+                    Task task = Task.Factory.StartNew(() => Message(currentClient, response));
+                    task.Wait();
+                }
 
-                    if (Console.ReadLine().ToLower() == "stop")
+                /*int response = 0;
+                //работаем с каждым клиентом
+                //сделать для каждого свой поток
+                foreach (var currentClient in clients)
+                {
+                    response += 1;
+                    Message(currentClient, response);
+                }*/
+
+                #region Черновик
+
+                #region старый цикл
+                /*
+                while (true)
+                {
+
+                    // получаем входящее подключение
+                    TcpClient client = server.AcceptTcpClient();
+
+                    clients.Add(client);
+                    Console.WriteLine("Подключено клиент. Количество клиентов " + clients.Count());
+                    // streams.Add(client.GetStream());
+                    //Console.WriteLine("Подключен клиент. Выполнение запроса... stop для остановки и отдачи задача");
+
+                    //Если клиент подключён, продолжать дальше подкючения 
+                    //всё тормозиться из-за чтения записи. 
+                    //проверить успешно ли подключён клиент
+                    //если да 
+                    //то продолжить подключение
+                    //или отключить подключение 
+                    if (Console.ReadLine().ToLower() != "stop") continue;
+                    else
                     {
-                        Console.WriteLine("Количество подключенных клиентов готовых выполнить задачу: " + listConnectedClients.Count);
                         break;
                     }
+                    
+                    // получаем сетевой поток для чтения и записи
+                    //NetworkStream stream = client.GetStream();
+                    //
+                    // сообщение для отправки клиенту
+                    //string response = "Привет мир";
+                    // преобразуем сообщение в массив байтов
+                    //byte[] data = Encoding.UTF8.GetBytes(response);
+                    //
+                    // отправка сообщения
+                    //stream.Write(data, 0, data.Length);
+                    //Console.WriteLine("Отправлено сообщение: {0}", response);
+                    // закрываем подключение
+                    //client.Close();
                 }
-                
+            */
+                #endregion
+
+                #region более менее
+                /*int response = 0;
+                //работаем с каждым клиентом
+                //сделать для каждого свой поток
+                foreach (var currentClient in clients)
+                {
+                    // получаем сетевой поток для чтения и записи
+                    NetworkStream stream = currentClient.GetStream();
+
+                    // сообщение для отправки клиенту
+                    response += 1;
+                    // преобразуем сообщение в массив байтов
+                    byte[] data = Encoding.UTF8.GetBytes(response.ToString());
+                    // отправка сообщения
+                    stream.Write(data, 0, data.Length);
+                    Console.WriteLine("Отправлено сообщение: {0}", response);
+
+                    //для принятия сообщений
+                    data = new byte[256];
+                    StringBuilder builder = new StringBuilder();
+                    int bytes = 0;
+                    do
+                    {
+                        bytes = stream.Read(data, 0, data.Length);
+                        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                    }
+                    while (stream.DataAvailable);
+                    string message = builder.ToString();
+                    Console.WriteLine("Принято сообщения " + message);
+
+                    // закрываем подключение
+                    currentClient.Close();
+                }*/
+                #endregion
+
+                #region Ещё одна запись
+                /*
+                int response = 0;
+                //работаем с каждым клиентом
+                //сделать для каждого свой поток
+                foreach (var currentClient in clients)
+                {
+                    // получаем сетевой поток для чтения и записи
+                    NetworkStream stream = currentClient.GetStream();
+                    response += 1;
+                    //Отправляем сообщение
+                    SendMessage(stream, response);
+                    //Принимаем сообщение
+                    GetMessage(stream);
+                    // закрываем подключение
+                    currentClient.Close();
+                }*/
+                #endregion
+
+                #region Оригинальная запись
+
                 /*while (true)
                 {
-                    TcpClient client = listener.AcceptTcpClient();
-                    ClientObject clientObject = new ClientObject(client);
+                    Console.WriteLine("Ожидание подключений... ");
 
-                    // создаем новый поток для обслуживания нового клиента
-                    Thread clientThread = new Thread(new ThreadStart(clientObject.Process));
-                    clientThread.Start();
+                    // получаем входящее подключение
+                    TcpClient client = server.AcceptTcpClient();
+
+                    Console.WriteLine("Подключен клиент. Выполнение запроса... stop для остановки и отдачи задача");
+                    if (Console.ReadLine().ToLower() == "stop")
+                    {
+
+                    }
+                    // получаем сетевой поток для чтения и записи
+                    NetworkStream stream = client.GetStream();
+
+                    // сообщение для отправки клиенту
+                    string response = "Привет мир";
+                    // преобразуем сообщение в массив байтов
+                    byte[] data = Encoding.UTF8.GetBytes(response);
+
+                    // отправка сообщения
+                    stream.Write(data, 0, data.Length);
+                    Console.WriteLine("Отправлено сообщение: {0}", response);
+                    // закрываем подключение
+                    client.Close();
                 }*/
+
+                #endregion
+
+                #endregion
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(e.Message);
             }
             finally
             {
-                if (listener != null)
-                    listener.Stop();
+                if (server != null)
+                    server.Stop();
                 Console.Read();
             }
+        }
+
+        private static void Message(TcpClient currentClient, int response)
+        {
+            // получаем сетевой поток для чтения и записи
+            NetworkStream stream = currentClient.GetStream();
+            //Отправляем сообщение
+            SendMessage(stream, response);
+            //Принимаем сообщение
+            GetMessage(stream);
+            // закрываем подключение
+            currentClient.Close();
+        }
+
+        private static void GetMessage(NetworkStream stream)
+        {
+
+            //для принятия сообщений
+            byte[] data = new byte[256];
+            StringBuilder builder = new StringBuilder();
+            int bytes = 0;
+            do
+            {
+                bytes = stream.Read(data, 0, data.Length);
+                builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+            }
+            while (stream.DataAvailable);
+            string message = builder.ToString();
+            Console.WriteLine("Принято сообщения " + message);
+        }
+
+        private static void SendMessage(NetworkStream stream, int response)
+        {
+            // сообщение для отправки клиенту
+            // преобразуем сообщение в массив байтов
+            byte[] data = Encoding.UTF8.GetBytes(response.ToString());
+            // отправка сообщения
+            stream.Write(data, 0, data.Length);
+            Console.WriteLine("Отправлено сообщение: {0}", response);
         }
     }
 }
