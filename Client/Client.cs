@@ -1,68 +1,55 @@
 ﻿using System;
-using System.Collections;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
-namespace Client
+namespace TcpClientApp
 {
     class Program
     {
-        const int port = 8888;
-        //const string address = "127.0.0.1";
-        //const string address = "87.76.238.192";
-        const string address = "192.168.1.127";
+        private const int port = 8888;
+        private const string server = "192.168.1.127";//"127.0.0.1";
 
         static void Main(string[] args)
         {
-            //Console.Write("Введите свое имя:");
-            //string userName = Console.ReadLine();
-            TcpClient client = null;
-
-
-            //IPHostEntry IPHost = Dns.GetHostByName(Dns.GetHostName());
-            ////string adr = IPHost.AddressList[2].ToString();
-
             try
             {
-                client = new TcpClient(address, port);
+                TcpClient client = new TcpClient();
+                client.Connect(server, port);
+
+                byte[] data = new byte[256];
+                StringBuilder response = new StringBuilder();
                 NetworkStream stream = client.GetStream();
 
-                while (true)
+                //чтение записи
+                do
                 {
-                    //Console.Write(userName + ": ");
-                    // ввод сообщения
-                    //string message = Console.ReadLine();
-                    //message = String.Format("{0}: {1}", userName, message);
-                    // преобразуем сообщение в массив байтов
-                    byte[] data = new byte[] {0};//Encoding.Unicode.GetBytes(message*);
-                    // отправка сообщения
-                    stream.Write(data, 0, data.Length);
-
-                    // получаем ответ
-                    data = new byte[64]; // буфер для получаемых данных
-                    StringBuilder builder = new StringBuilder();
-                    int bytes = 0;
-                    do
-                    {
-                        bytes = stream.Read(data, 0, data.Length);
-                        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                    }
-                    while (stream.DataAvailable);
-
-                    //message = builder.ToString();
-                    //Console.WriteLine("Сервер: {0}", message);
+                    int bytes = stream.Read(data, 0, data.Length);
+                    response.Append(Encoding.UTF8.GetString(data, 0, bytes));
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
+                while (stream.DataAvailable); // пока данные есть в потоке
+
+                Console.WriteLine(response.ToString());
+
+                //отправка записи
+                string message = "Данные я принял, можешь не париться)";
+                data = Encoding.Unicode.GetBytes(message);
+                stream.Write(data, 0, data.Length);
+
+                // Закрываем потоки
+                stream.Close();
                 client.Close();
             }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e.Message);
+            }
+
+            Console.WriteLine("Запрос завершен...");
+            Console.Read();
         }
     }
 }
